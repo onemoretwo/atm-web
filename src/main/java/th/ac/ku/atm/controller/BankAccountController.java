@@ -13,22 +13,22 @@ import th.ac.ku.atm.service.BankAccountService;
 @Controller
 @RequestMapping("/bankaccount")
 public class BankAccountController {
-    private BankAccountService bankAccountService;
+    private BankAccountService accountService;
 
     public BankAccountController(BankAccountService bankAccountService){
-        this.bankAccountService = bankAccountService;
+        this.accountService = bankAccountService;
     }
 
-//    @GetMapping
-//    public String getBankAccountPage(Model model){
-//        model.addAttribute("allBankAccount", bankAccountService.getBankAccountList());
-//        return "bankaccount";
-//    }
-//
-//    @PostMapping
-//    public String registerBankAccount(@ModelAttribute BankAccount bankAccount, Model model){
-//        bankAccountService.createBankAccount(bankAccount);
-//        model.addAttribute("allBankAccount", bankAccountService.getBankAccountList());
-//        return "redirect:bankaccount";
-//    }
+    @GetMapping
+    public String getBankAccountPage(Model model) {
+        model.addAttribute("bankaccounts", accountService.getBankAccounts());
+        return "bankaccount";
+    }
+
+    @PostMapping
+    public String openAccount(@ModelAttribute BankAccount bankAccount, Model model) {
+        accountService.openAccount(bankAccount);
+        model.addAttribute("bankaccounts",accountService.getBankAccounts());
+        return "redirect:bankaccount";
+    }
 }
