@@ -29,18 +29,39 @@ public class BankAccountController {
         return "redirect:bankaccount";
     }
 
-    @GetMapping("/edit/{id}")
-    public String getEditBankAccountPage(@PathVariable int id, Model model) {
+    @GetMapping("/deposit/{id}")
+    public String getdepositBankAccountPage(@PathVariable int id, Model model) {
         BankAccount account = bankAccountService.getBankAccount(id);
         model.addAttribute("bankAccount", account);
         return "bankaccount-edit";
     }
 
-    @PostMapping("/edit/{id}")
-    public String editAccount(@PathVariable int id,
+    @GetMapping("/withdraw/{id}")
+    public String getwithdrawBankAccountPage(@PathVariable int id, Model model) {
+        BankAccount account = bankAccountService.getBankAccount(id);
+        model.addAttribute("bankAccount", account);
+        return "bankaccount-withdraw";
+    }
+
+    @PostMapping("/deposit/{id}")
+    public String depositAccount(@PathVariable int id,
                               @ModelAttribute BankAccount bankAccount,
+                              @RequestParam("amount") double amount,
                               Model model) {
 
+        bankAccount.deposit(amount);
+        bankAccountService.editBankAccount(bankAccount);
+        model.addAttribute("bankaccounts",bankAccountService.getBankAccounts());
+        return "redirect:/bankaccount";
+    }
+
+    @PostMapping("/withdraw/{id}")
+    public String withdrawAccount(@PathVariable int id,
+                                 @ModelAttribute BankAccount bankAccount,
+                                 @RequestParam("amount") double amount,
+                                 Model model) {
+
+        bankAccount.withdraw(amount);
         bankAccountService.editBankAccount(bankAccount);
         model.addAttribute("bankaccounts",bankAccountService.getBankAccounts());
         return "redirect:/bankaccount";
